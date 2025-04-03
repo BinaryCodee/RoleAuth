@@ -1,6 +1,6 @@
 # RoleAuth - Advanced Minecraft BungeeCord Authentication System
 
-![License](https://img.shields.io/badge/License-Apache 2.0-green)
+![License](https://img.shields.io/badge/License-Apache-2.0-green)
 
 ## Overview
 
