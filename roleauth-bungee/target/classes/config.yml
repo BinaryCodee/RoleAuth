@@ -1,0 +1,65 @@
+redis:
+  host: localhost
+  port: 6379
+  password: ""
+  timeout: 2000
+
+settings:
+  max-login-attempts: 5
+  authentication-timeout: 60
+  reminder-delay: 10
+  min-password-length: 6
+  max-password-length: 32
+  hash-method: "bcrypt" # argon2 // bcrypt
+  check-premium: true
+  auto-premium: true
+  premium-cache-time: 60
+  premium-confirm-timeout: 60
+
+messages:
+  prefix: "&8[&bRoleAuth&8] &7"
+  "player-only": "&cThis command can only be used by players!"
+  "no-permission": "&cYou don't have permission to do this!"
+  "config-reloaded": "Configuration reloaded!"
+  "login-required": "Please login using &b/login <password>"
+  "register-required": "Please register using &b/register <password> <password>"
+  "register-reminder": "&cYou must still register! Use &6/register <password> <password> &cto create your account"
+  "already-authenticated": "&cYou are already authenticated!"
+  "authentication-timeout": "&cAuthentication timed out!"
+  "force-login": "&aYou were force-logged in by an admin"
+  "auto-login-premium": "&aAuto-logged in via premium account"
+  "password-length": "&cPassword must be between %min% and %max% characters!"
+  "passwords-not-match": "&cPasswords do not match!"
+  "wrong-password": "&cIncorrect password! Attempts: %attempts%/%max_attempts%"
+  "too-many-attempts": "&cToo many failed attempts!"
+  "already-registered": "&cYou are already registered!"
+  "register-success": "&aSuccessfully registered!"
+  "force-register": "&aYour account was force-registered by admin"
+  "login-success": "&aSuccessfully logged in!"
+  "error-retrieving-password": "&cError retrieving your password"
+  "premium-set": "&aPremium mode activated! Reconnect to apply changes"
+  "premium-set-kick": "&aPremium mode activated!\n&aReconnect to apply changes"
+  "cracked-set": "&aCracked mode activated!"
+  "premium-confirm": "&aType &b/premium &aagain within 60 seconds to confirm"
+  "premium-confirm-reminder": "&aConfirm premium switch with &b/premium"
+  "premium-confirm-timeout": "&cPremium confirmation timed out"
+  "premium-auto-login": "&aAutomatically logged in via premium account"
+  "already-premium": "&cYou are already a premium user!"
+  "not-premium-account": "&cThis username isn't premium!"
+  "premium-no-password": "&cPremium accounts don't have passwords!"
+  "already-cracked": "&cYou are already in cracked mode!"
+  "admin-force-login": "&aForce-logged in %player%"
+  "admin-force-register": "&aForce-registered %player%"
+  "admin-reset": "&aReset credentials for %player%"
+  "admin-set-premium": "&aSet %player% as premium"
+  "admin-set-cracked": "&aSet %player% as cracked"
+  "account-reset": "&cYour account credentials were reset by admin"
+  "player-not-found": "&cPlayer %player% not found!"
+  "not-registered": "&cYou are not registered!"
+  "not-authenticated": "&cYou must authenticate first!"
+  "wrong-password-change": "&cOld password is incorrect!"
+  "password-changed": "&aPassword changed successfully!"
+  "not-registered-premium": "&cRegister first before switching to premium!"
+  "login-usage": "&cUse: &7/login <password>"
+  "register-usage": "&cUse: &7/register <password> <password>"
+  "changepassword-usage": "&cUse: &7/changepassword <old> <new>"

@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/roleauth.iml" filepath="$PROJECT_DIR$/roleauth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/roleauth-bungee/roleauth-bungee.iml" filepath="$PROJECT_DIR$/roleauth-bungee/roleauth-bungee.iml" />
+      <module fileurl="file://$PROJECT_DIR$/roleauth-spigot/roleauth-spigot.iml" filepath="$PROJECT_DIR$/roleauth-spigot/roleauth-spigot.iml" />
     </modules>
   </component>
 </project>

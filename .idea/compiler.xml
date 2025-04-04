@@ -6,8 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="roleauth" />
+        <module name="roleauth-spigot" />
+        <module name="roleauth-bungee" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="roleauth-api" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
