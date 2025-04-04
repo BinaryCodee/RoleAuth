@@ -1,3 +1,0 @@
-name: RoleAuth
-version: '1.0-SNAPSHOT'
-main: xyz.blacked.roleminermc.authentication.RoleLogin
