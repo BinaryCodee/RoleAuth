@@ -3,10 +3,9 @@ package xyz.blacked.bungee;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
-import xyz.blacked.bungee.api.SQLiteBridge;
 import xyz.blacked.bungee.cmds.*;
-import xyz.blacked.bungee.data.Database;
-import xyz.blacked.bungee.data.DatabaseManager;
+import xyz.blacked.bungee.database.Database;
+import xyz.blacked.bungee.database.DatabaseManager;
 import xyz.blacked.bungee.listener.PlayerListener;
 import xyz.blacked.bungee.manager.AuthenticationManager;
 import xyz.blacked.bungee.manager.ChannelManager;
@@ -25,7 +24,6 @@ public class RoleLogin extends Plugin {
     private DatabaseManager databaseManager;
     private AuthenticationManager authManager;
     private ChannelManager channelManager;
-    private SQLiteBridge sqliteBridge;
     private boolean enabled = false;
 
     @Override
@@ -36,7 +34,6 @@ public class RoleLogin extends Plugin {
             config = configFiles.getConfig();
             utils = new Utils(this);
             registerEssentialCommands();
-            if (!initSQLite()) return;
             if (!initDatabase()) return;
             initManagers();
             registerListeners();
@@ -59,21 +56,6 @@ public class RoleLogin extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new RoleAuthCMD(this));
         getProxy().getPluginManager().registerCommand(this, new RoleAuthAdminCMD(this));
         System.out.println("Commands Registered!");
-    }
-
-    private boolean initSQLite() {
-        try {
-            sqliteBridge = new SQLiteBridge(this);
-            System.out.println("Initializing SQLite!");
-            if (!sqliteBridge.initialize()) {
-                getLogger().log(Level.SEVERE, "§cFailed to initialize SQLite bridge");
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            getLogger().log(Level.SEVERE, "§cSQLite initialization failed", e);
-            return false;
-        }
     }
 
     private boolean initDatabase() {
@@ -134,5 +116,4 @@ public class RoleLogin extends Plugin {
     public DatabaseManager getDatabaseManager() { return databaseManager; }
     public AuthenticationManager getAuthManager() { return authManager; }
     public ChannelManager getChannelManager() { return channelManager; }
-    public SQLiteBridge getSqliteBridge() { return sqliteBridge; }
 }
