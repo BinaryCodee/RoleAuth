@@ -1,15 +1,21 @@
-package xyz.blacked.bungee.data;
+package xyz.blacked.bungee.database;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import xyz.blacked.bungee.RoleLogin;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 
 public class Database {
 
     private final RoleLogin plugin;
-    private Connection connection;
+    private HikariDataSource dataSource;
     private final String dbPath;
 
     public Database(RoleLogin plugin) {
@@ -22,22 +28,23 @@ public class Database {
     }
 
     /**
-     * Connect to SQLite database
+     * Connect to SQLite database using HikariCP
      *
      * @return True if connection successful
      */
     public boolean connect() {
         try {
-            if (!plugin.getSqliteBridge().isDriverLoaded()) {
-                plugin.getLogger().severe("SQLite JDBC driver not loaded by bridge");
-                return false;
-            }
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl("jdbc:sqlite:" + dbPath);
+            config.setDriverClassName("org.sqlite.JDBC");
+            config.setMaximumPoolSize(10);
+            config.setConnectionTestQuery("SELECT 1");
 
-            String jdbcUrl = "jdbc:sqlite:" + dbPath;
-            plugin.getLogger().info("Connecting to database at: " + jdbcUrl);
-            connection = DriverManager.getConnection(jdbcUrl);
+            dataSource = new HikariDataSource(config);
+            plugin.getLogger().info("Database connection pool initialized!");
 
-            try (Statement stmt = connection.createStatement()) {
+            try (Connection connection = dataSource.getConnection();
+                 Statement stmt = connection.createStatement()) {
                 stmt.execute("SELECT 1");
                 plugin.getLogger().info("Database connection test successful!");
             }
@@ -56,13 +63,9 @@ public class Database {
      * Disconnect from SQLite database
      */
     public void disconnect() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                plugin.getLogger().info("Database connection closed.");
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not disconnect from SQLite database", e);
+        if (dataSource != null && !dataSource.isClosed()) {
+            dataSource.close();
+            plugin.getLogger().info("Database connection pool closed.");
         }
     }
 
@@ -72,7 +75,8 @@ public class Database {
      * @param sql SQL query
      */
     public void execute(String sql) {
-        try (Statement statement = connection.createStatement()) {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             statement.execute(sql);
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not execute SQL: " + sql, e);
@@ -86,7 +90,8 @@ public class Database {
      * @param params Parameters
      */
     public void execute(String sql, Object... params) {
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
                 statement.setObject(i + 1, params[i]);
             }
@@ -104,6 +109,7 @@ public class Database {
      */
     public ResultSet query(String sql) {
         try {
+            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             return statement.executeQuery();
         } catch (SQLException e) {
@@ -121,6 +127,7 @@ public class Database {
      */
     public ResultSet query(String sql, Object... params) {
         try {
+            Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             for (int i = 0; i < params.length; i++) {
                 statement.setObject(i + 1, params[i]);
@@ -138,6 +145,11 @@ public class Database {
      * @return Connection
      */
     public Connection getConnection() {
-        return connection;
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not get connection from pool", e);
+            return null;
+        }
     }
 }

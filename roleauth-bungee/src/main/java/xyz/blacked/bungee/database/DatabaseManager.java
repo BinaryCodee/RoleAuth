@@ -1,4 +1,4 @@
-package xyz.blacked.bungee.data;
+package xyz.blacked.bungee.database;
 
 import xyz.blacked.bungee.RoleLogin;
 
