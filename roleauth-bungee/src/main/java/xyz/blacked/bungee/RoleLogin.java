@@ -17,6 +17,7 @@ import java.util.logging.Level;
 public class RoleLogin extends Plugin {
 
     private static RoleLogin instance;
+
     private ConfigFiles configFiles;
     private Configuration config;
     private Utils utils;
